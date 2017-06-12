@@ -26,10 +26,23 @@ class Ring extends React.Component {
   }
 }
 
+class Timer extends React.Component {
+  render() {
+    return (
+      <Text style={styles.timer}>
+        <Text style={styles.timerUnits}>Days</Text>
+        <Text style={styles.timerUnits}>Hours</Text>
+        <Text style={styles.timerUnits}>Mins</Text>
+      </Text>
+    );
+  }
+}
+
 export default class App extends React.Component {
   render() {
     return (
       <View style={styles.container}>
+        <Timer />
         <Ring />
       </View>
     );
@@ -43,4 +56,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  timer: {
+    flexDirection: 'row',
+  }
 });
