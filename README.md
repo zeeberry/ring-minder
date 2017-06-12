@@ -1,2 +1,3 @@
 # ring-minder
-reminder app for nuva ring
+Reminder app for Nuva Ring.
+
