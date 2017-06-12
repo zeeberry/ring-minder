@@ -7,15 +7,17 @@ class Ring extends React.Component {
     this.state = {isInserted: false};
   }
 
-  _onPressButton() {
-     Alert.alert('You tapped the button!');
+  _onPress = () => {
+    this.setState(previousState => {
+      return { isInserted: !previousState.isInserted };
+    });
   }
 
   render() {
     let text = this.state.isInserted ? 'Inserted' : 'Removed';
 
     return (
-      <TouchableWithoutFeedback onPress={this._onPressButton}>
+      <TouchableWithoutFeedback onPress={this._onPress}>
         <View>
           <Text>{text}</Text>
         </View>
