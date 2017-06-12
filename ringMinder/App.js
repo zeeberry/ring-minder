@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Alert, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native';
 
 class Ring extends React.Component {
   constructor(props) {
@@ -7,11 +7,19 @@ class Ring extends React.Component {
     this.state = {isInserted: false};
   }
 
+  _onPressButton() {
+     Alert.alert('You tapped the button!');
+  }
+
   render() {
     let text = this.state.isInserted ? 'Inserted' : 'Removed';
 
     return (
-      <Text>{text}</Text>
+      <TouchableWithoutFeedback onPress={this._onPressButton}>
+        <View>
+          <Text>{text}</Text>
+        </View>
+      </TouchableWithoutFeedback>
     );
   }
 }
