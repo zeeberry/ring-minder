@@ -26,13 +26,34 @@ class Ring extends React.Component {
   }
 }
 
-class Timer extends React.Component {
+class CountDownTimer extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {secondsRemaining: 0};
+  }
+
+  tick = () => {
+    this.setState({secondsRemaining: this.state.secondsRemaining - 1});
+    if (this.state.secondsRemaining <= 0) {
+      clearInterval(this.interval);
+    }
+  }
+
+  componentDidMount() {
+    this.setState({secondsRemaining: this.props.secondsRemaining});
+    this.interval = setInterval(this.tick, 1000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
+
   render() {
     return (
-      <Text style={styles.timer}>
-        <Text style={styles.timerUnits}>Days</Text>
-        <Text style={styles.timerUnits}>Hours</Text>
-        <Text style={styles.timerUnits}>Mins</Text>
+      <Text style={styles.countdown}>
+        <Text style={styles.countdownUnits}>Days</Text>
+        <Text style={styles.countdownUnits}>Hours</Text>
+        <Text style={styles.countdownUnits}>{this.state.secondsRemaining} Sec</Text>
       </Text>
     );
   }
@@ -42,7 +63,7 @@ export default class App extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Timer />
+        <CountDownTimer secondsRemaining="10"/>
         <Ring />
       </View>
     );
@@ -56,7 +77,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  timer: {
+  countdown: {
     flexDirection: 'row',
   }
 });
