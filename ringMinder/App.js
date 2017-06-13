@@ -29,7 +29,12 @@ class Ring extends React.Component {
 class CountDownTimer extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {secondsRemaining: 0};
+    this.state = {
+      secondsRemaining: 0,
+      minutesRemaining: 0,
+      hoursRemaining: 0,
+      daysRemaining: 0
+    };
   }
 
   tick = () => {
@@ -39,8 +44,27 @@ class CountDownTimer extends React.Component {
     }
   }
 
+  getRemainderTime() {
+  
+  }
+
   componentDidMount() {
-    this.setState({secondsRemaining: this.props.secondsRemaining});
+    const totalSecondsRemaining = this.props.secondsRemaining;
+    const secondsInDay = 86400;
+    const secondsInHour = 3600;
+    const secondsInMinute = 60;
+    const days = ~~(totalSecondsRemaining / secondsInDay);
+    const hours = ~~(totalSecondsRemaining / secondsInHour);
+    const minutes = ~~((totalSecondsRemaining % secondsInHour) / secondsInMinute);
+    const seconds = totalSecondsRemaining % secondsInMinute;
+
+    this.setState({
+      daysRemaining: days,
+      hoursRemaining: hours,
+      minutesRemaining: minutes,
+      secondsRemaining: seconds
+    });
+
     this.interval = setInterval(this.tick, 1000);
   }
 
@@ -51,8 +75,9 @@ class CountDownTimer extends React.Component {
   render() {
     return (
       <Text style={styles.countdown}>
-        <Text style={styles.countdownUnits}>Days</Text>
-        <Text style={styles.countdownUnits}>Hours</Text>
+        <Text style={styles.countdownUnits}>{this.state.daysRemaining} Days</Text>
+        <Text style={styles.countdownUnits}>{this.state.hoursRemaining} Hrs</Text>
+        <Text style={styles.countdownUnits}>{this.state.minutesRemaining} Mins</Text>
         <Text style={styles.countdownUnits}>{this.state.secondsRemaining} Sec</Text>
       </Text>
     );
@@ -63,7 +88,7 @@ export default class App extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <CountDownTimer secondsRemaining="10"/>
+        <CountDownTimer secondsRemaining="100"/>
         <Ring />
       </View>
     );
@@ -79,5 +104,7 @@ const styles = StyleSheet.create({
   },
   countdown: {
     flexDirection: 'row',
+  },
+  countdownUnits: {
   }
 });
