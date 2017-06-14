@@ -8,6 +8,7 @@ class Ring extends React.Component {
   }
 
   _onPress = () => {
+    this.props.onSetCountdownTime(100, 0);
     this.setState(previousState => {
       return { isInserted: !previousState.isInserted };
     });
@@ -85,11 +86,25 @@ class CountDownTimer extends React.Component {
 }
 
 export default class App extends React.Component {
+  constructor() {
+    this.state = {
+      secondsRemaining: 0
+      countDownStatus: 0;
+    };
+  }
+
+  handleSetCountDownTimer(seconds, countDownDtatus) {
+    this.setState({
+      secondsRemaining: seconds,
+      countDownStatus: countDownStatus
+    });
+  }
+
   render() {
     return (
       <View style={styles.container}>
         <CountDownTimer secondsRemaining="100"/>
-        <Ring />
+        <Ring onSetCountDownTimer={this.handleSetCountDownTimer.bind(this)}/>
       </View>
     );
   }
