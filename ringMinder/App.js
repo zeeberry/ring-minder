@@ -88,8 +88,8 @@ class CountDownTimer extends React.Component {
 export default class App extends React.Component {
   constructor() {
     this.state = {
-      secondsRemaining: 0
-      countDownStatus: 0;
+      secondsRemaining: 0,
+      countDownStatus: 0
     };
   }
 
