@@ -8,7 +8,11 @@ class Ring extends React.Component {
   }
 
   _onPress = () => {
-    this.props.onSetCountdownTime(100, 0);
+    const {isInserted} = this.state;
+    const seconds = isInserted ? 100 : 21;
+
+    this.props.onSetCountDownTimer(seconds, 1);
+
     this.setState(previousState => {
       return { isInserted: !previousState.isInserted };
     });
@@ -28,10 +32,11 @@ class Ring extends React.Component {
 }
 
 class CountDownTimer extends React.Component {
+
   constructor(props) {
     super(props);
     this.state = {
-      secondsRemaining: 0,
+      secondsRemaining: this.props.secondsRemaining,
       minutesRemaining: 0,
       hoursRemaining: 0,
       daysRemaining: 0
@@ -39,9 +44,13 @@ class CountDownTimer extends React.Component {
   }
 
   tick = () => {
-    this.setState({secondsRemaining: this.state.secondsRemaining - 1});
-    if (this.state.secondsRemaining <= 0) {
-      clearInterval(this.interval);
+
+    if (this.state.secondsRemaining > 0) {
+      this.setState({secondsRemaining: this.state.secondsRemaining - 1});
+
+      if (this.state.secondsRemaining === 0) {
+        clearInterval(this.interval);
+      }
     }
   }
 
@@ -50,23 +59,30 @@ class CountDownTimer extends React.Component {
   }
 
   componentDidMount() {
-    const totalSecondsRemaining = this.props.secondsRemaining;
+    this.interval = setInterval(this.tick, 1000);
+  }
+
+  formatSeconds(seconds) {
+    const secondsInMinute = 60;
+    return seconds % secondsInMinute;
+  }
+
+  formatMinutes(seconds) {
+    const secondsInHour = 3600;
+  }
+
+  formatTime(seconds) {
     const secondsInDay = 86400;
     const secondsInHour = 3600;
     const secondsInMinute = 60;
-    const days = ~~(totalSecondsRemaining / secondsInDay);
-    const hours = ~~(totalSecondsRemaining / secondsInHour);
-    const minutes = ~~((totalSecondsRemaining % secondsInHour) / secondsInMinute);
-    const seconds = totalSecondsRemaining % secondsInMinute;
 
-    this.setState({
-      daysRemaining: days,
-      hoursRemaining: hours,
-      minutesRemaining: minutes,
-      secondsRemaining: seconds
-    });
-
-    this.interval = setInterval(this.tick, 1000);
+    return {
+      days: ~~(seconds / secondsInDay),
+      hours: ~~(seconds / secondsInHour),
+      minutes: ~~((seconds % secondsInHour) / secondsInMinute),
+      seconds: seconds % secondsInMinute
+    }
+    
   }
 
   componentWillUnmount() {
@@ -79,7 +95,7 @@ class CountDownTimer extends React.Component {
         <Text style={styles.countdownUnits}>{this.state.daysRemaining} Days</Text>
         <Text style={styles.countdownUnits}>{this.state.hoursRemaining} Hrs</Text>
         <Text style={styles.countdownUnits}>{this.state.minutesRemaining} Mins</Text>
-        <Text style={styles.countdownUnits}>{this.state.secondsRemaining} Sec</Text>
+        <Text style={styles.countdownUnits}>{this.formatSeconds(this.props.secondsRemaining)} Sec</Text>
       </Text>
     );
   }
@@ -94,17 +110,22 @@ export default class App extends React.Component {
     };
   }
 
-  handleSetCountDownTimer(seconds, countDownDtatus) {
+  handleSetCountDownTimer(seconds, countDownStatus) {
     this.setState({
       secondsRemaining: seconds,
       countDownStatus: countDownStatus
     });
+
+    console.log(this.state.secondsRemaining);
+    console.log(seconds);
   }
 
   render() {
+    let {secondsRemaining} = this.state;
+
     return (
       <View style={styles.container}>
-        <CountDownTimer secondsRemaining="100"/>
+        <CountDownTimer secondsRemaining={secondsRemaining}/>
         <Ring onSetCountDownTimer={this.handleSetCountDownTimer.bind(this)}/>
       </View>
     );
