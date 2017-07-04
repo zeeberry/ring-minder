@@ -54,10 +54,6 @@ class CountDownTimer extends React.Component {
     }
   }
 
-  getRemainderTime() {
-  
-  }
-
   componentDidMount() {
     this.interval = setInterval(this.tick, 1000);
   }
