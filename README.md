@@ -1,4 +1,4 @@
-# ring-minder
+# Ring.
 Reminder app for Nuva Ring.
 
 Built in React Native
