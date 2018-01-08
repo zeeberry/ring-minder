@@ -8,10 +8,12 @@ class Ring extends React.Component {
   }
 
   _onPress = () => {
-    const {isInserted} = this.state;
-    const seconds = isInserted ? 100 : 21;
+    this.setState({ datePressed: new Date()});
+    const {isInserted, datePressed} = this.state;
+    const days = isInserted ? 21 : 7;
+    const endDate = datePressed.setDate(datePressed.getDate() + days);
 
-    this.props.onSetCountDownTimer(seconds, 1);
+    this.props.onSetCountDownTimer(endDate, 1);
 
     this.setState(previousState => {
       return { isInserted: !previousState.isInserted };
@@ -36,10 +38,10 @@ class CountDownTimer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      secondsRemaining: this.props.secondsRemaining,
-      minutesRemaining: 0,
-      hoursRemaining: 0,
-      daysRemaining: 0
+      seconds: 0,
+      minutes: 0,
+      hours: 0,
+      days: 0
     };
   }
 
@@ -86,12 +88,14 @@ class CountDownTimer extends React.Component {
   }
 
   render() {
+    const {endDate} = this.props;
+    const countDown = formatTime(endDate);
     return (
       <Text style={styles.countdown}>
-        <Text style={styles.countdownUnits}>{this.state.daysRemaining} Days</Text>
-        <Text style={styles.countdownUnits}>{this.state.hoursRemaining} Hrs</Text>
-        <Text style={styles.countdownUnits}>{this.state.minutesRemaining} Mins</Text>
-        <Text style={styles.countdownUnits}>{this.formatSeconds(this.props.secondsRemaining)} Sec</Text>
+        <Text style={styles.countdownUnits}>{countDown.days} Days</Text>
+        <Text style={styles.countdownUnits}>{countDown.hours} Hrs</Text>
+        <Text style={styles.countdownUnits}>{countDown.minutes} Mins</Text>
+        <Text style={styles.countdownUnits}>{countDowm.seconds} Sec</Text>
       </Text>
     );
   }
@@ -101,27 +105,24 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      secondsRemaining: 0,
+      endDate: 0,
       countDownStatus: 0
     };
   }
 
-  handleSetCountDownTimer(seconds, countDownStatus) {
+  handleSetCountDownTimer(date, countDownStatus) {
     this.setState({
-      secondsRemaining: seconds,
+      endDate: date,
       countDownStatus: countDownStatus
     });
-
-    console.log(this.state.secondsRemaining);
-    console.log(seconds);
   }
 
   render() {
-    let {secondsRemaining} = this.state;
+    let {endDate} = this.state;
 
     return (
       <View style={styles.container}>
-        <CountDownTimer secondsRemaining={secondsRemaining}/>
+        <CountDownTimer endDate={endDate}/>
         <Ring onSetCountDownTimer={this.handleSetCountDownTimer.bind(this)}/>
       </View>
     );
