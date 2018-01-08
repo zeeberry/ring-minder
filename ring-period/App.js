@@ -89,13 +89,13 @@ class CountDownTimer extends React.Component {
 
   render() {
     const {endDate} = this.props;
-    const countDown = formatTime(endDate);
+    const countDown = this.formatTime(endDate);
     return (
       <Text style={styles.countdown}>
         <Text style={styles.countdownUnits}>{countDown.days} Days</Text>
         <Text style={styles.countdownUnits}>{countDown.hours} Hrs</Text>
         <Text style={styles.countdownUnits}>{countDown.minutes} Mins</Text>
-        <Text style={styles.countdownUnits}>{countDowm.seconds} Sec</Text>
+        <Text style={styles.countdownUnits}>{countDown.seconds} Sec</Text>
       </Text>
     );
   }
