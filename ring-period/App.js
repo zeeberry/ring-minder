@@ -51,6 +51,24 @@ class CurrentStatus extends React.Component {
   }
 }
 
+class EndDate extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+    };
+  }
+
+  render() {
+    let date = new Date();
+
+    return (
+      <View>
+        <Text>{date}</Text>
+      </View>
+    );
+  }
+}
+
 export default class App extends React.Component {
   constructor(props) {
     super(props);
